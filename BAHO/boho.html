@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Doctor - Medical Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Rubik Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8fafc;
+background-image: url(./img.jpg);
+/* background-position: 800mm; */
+object-fit: fill;
+            font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #0041ab;
+            /* line-height: 1.6; */
+
+        }
+        .dashboard-card {
+            /* background: linear-gradient(145deg, #ffffff, #f1f5f9); */
+            border-radius: 12px;
+            /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05); */
+            padding: 24px;
+            margin-bottom: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            animation: cardFadeIn 0.6s ease-out forwards;
+        }
+        @keyframes cardFadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        .vital-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 14px;
+        }
+        .vital-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+        .vital-unit {
+            font-size: 1rem;
+            color: #64748b;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+        .welcome-header {
+            /* background: linear-gradient(135deg, #3b82f6, #1e40af); */
+            color: rgb(10, 0, 99);
+            padding: 28px;
+            font-size: 20px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            animation: headerFadeIn 0.8s ease-out;
+        }
+        @keyframes headerFadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .welcome-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(36, 201, 187, 0.7), transparent 70%);
+            opacity: 0.5;
+            z-index: -1;
+        }
+        .patient-info {
+            background: #07043e2f;
+            /* opacity:0.3; */
+            border: 2px solid #080808;
+            color:#002a02;
+            border-radius: 12px;
+            padding: 24px;
+font-size: 22px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.6s ease-out 0.2s forwards;
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .card-number {
+            background: #e0f2fe;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Rubik', monospace;
+            color: #1e40af;
+            font-size: 0.9rem;
+        }
+        .icon-container {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dashboard-card:hover .icon-container {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .temperature-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .height-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .oxygen-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        .weight-icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+        .bp-icon {
+            background: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+        }
+        .glucose-icon {
+            background: rgba(234, 88, 12, 0.1);
+            color: #ea580c;
+        }
+        .pulse-animation {
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.85; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .history-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.4s ease;
+        }
+        .history-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(360deg) scale(1.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .progress {
+            height: 6px;
+            border-radius: 3px;
+            margin-top: 12px;
+            background-color: #e2e8f0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            transition: width 1.2s ease-in-out;
+            animation: progressFill 1.5s ease-out forwards;
+        }
+        @keyframes progressFill {
+            0% { width: 0; }
+            100% { width: inherit; }
+        }
+        .normal-range {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .warning-range {
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .danger-range {
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        /* Specific styling for Blood Pressure */
+        .bp-card .vital-value {
+            font-size: 2rem;
+            line-height: 1.1;
+        }
+        .bp-card .vital-unit {
+            font-size: 0.9rem;
+        }
+        .bp-card .progress {
+            display: flex;
+            gap: 8px;
+        }
+        .bp-card .progress-bar {
+            flex: 1;
+        }
+        .bp-card .progress-bar.systolic {
+            background-color: #eab308;
+        }
+        .bp-card .progress-bar.diastolic {
+            background-color: #facc15;
+        }
+        /* Specific styling for Glucose */
+        .glucose-card .vital-value {
+            font-size: 2rem;
+        }
+        .glucose-card .progress-bar {
+            background: linear-gradient(90deg, #ea580c, #fb923c);
+        }
+        .glucose-card .glucose-trend {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        /* Increased spacing for card rows */
+        .row {
+            margin-bottom: 32px;
+        }
+        .row > .col-md-4 {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">RFID Card Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-id-card fa-4x text-primary mb-3"></i>
+                            <p>Please scan your RFID card to access your medical dashboard</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Card Number</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="Enter RFID card number">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="loginBtn">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Modal -->
+        <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="historyModalLabel">Medical History</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-between mb-4">
+                            <h6>GISUBIZO HOPE</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="historyFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Last 7 days
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="historyFilter">
+                                    <li><a class="dropdown-item" href="#">Last 24 hours</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 7 days</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 30 days</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 6 months</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Temperature</th>
+                                        <th>Blood Pressure</th>
+                                        <th>Oxygen</th>
+                                        <th>Weight</th>
+                                        <th>Height</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Today, 10:30 AM</td>
+                                        <td>36.5°C</td>
+                                        <td>120/80</td>
+                                        <td>98%</td>
+                                        <td>75.2kg</td>
+                                        <td>175cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Yesterday, 9:15 AM</td>
+                                        <td>36.7°C</td>
+                                        <td>118/78</td>
+                                        <td>97%</td>
+                                        <td>75.0kg</td>
+                                        <td>175cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>May 25, 2025, 8:45 AM</td>
+                                        <td>36.3°C</td>
+                                        <td>122/82</td>
+                                        <td>96%</td>
+                                        <td>74.8kg</td>
+                                        <td>175cm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>May 22, 2025, 10:00 AM</td>
+                                        <td>36.8°C</td>
+                                        <td>119/79</td>
+                                        <td>98%</td>
+                                        <td>75.1kg</td>
+                                        <td>175cm</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Export Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div class="welcome-header animate__animated animate__fadeIn">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1><i class="fas fa-heartbeat me-2"></i> BAHO NURSE BOT</h1>
+                    <p class="mb-0">Patient medical dashboard and vital signs monitoring</p>
+                </div>
+                <button class="btn btn-light" id="changePatientBtn">
+                    <i class="fas fa-exchange-alt me-1"></i> Change Patient
+                </button>
+            </div>
+        </div>
+
+        <div class="patient-info animate__animated animate__fadeIn animate__delay-1s">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-user me-2"></i> GISUBIZO HOPE</h5>
+                    <p class="mb-2"><i class="fas fa-birthday-cake me-2"></i> Age: 32 years</p>
+                    <p class="mb-2"><i class="fas fa-venus-mars me-2"></i> Gender: Female</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-2"><i class="fas fa-calendar-alt me-2"></i> Last check: Today, 10:30 AM</p>
+                    <p class="mb-0"><i class="fas fa-id-card me-2"></i> Card Number: <span class="card-number">6B 35 C3 3B</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Temperature -->
+            <div class="col-md-4">
+                <div class="dashboard-card animate__animated animate__fadeInUp">
+                    <div class="icon-container temperature-icon">
+                        <i class="fas fa-thermometer-half fa-2x pulse-animation"></i>
+                    </div>
+                    <h6 class="vital-title">Temperature</h6>
+                    <div class="d-flex align-items-end">
+                        <span class="vital-value">36.5</span>
+                        <span class="vital-unit ms-2">°C</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%"></div>
+                    </div>
+                    <p class="mt-2 mb-0 normal-range"><i class="fas fa-check-circle me-1"></i> Normal range</p>
+                    <button class="history-btn" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Height -->
+            <div class="col-md-4">
+                <div class="dashboard-card animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="icon-container height-icon">
+                        <i class="fas fa-ruler-vertical fa-2x"></i>
+                    </div>
+                    <h6 class="vital-title">Height</h6>
+                    <div class="d-flex align-items-end">
+                        <span class="vital-value">175</span>
+                        <span class="vital-unit ms-2">Cm</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
+                    </div>
+                    <p class="mt-2 mb-0 normal-range"><i class="fas fa-check-circle me-1"></i> Normal for age</p>
+                    <button class="history-btn" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Oxygen Levels -->
+            <div class="col-md-4">
+                <div class="dashboard-card animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="icon-container oxygen-icon">
+                        <i class="fas fa-lungs fa-2x pulse-animation"></i>
+                    </div>
+                    <h6 class="vital-title">Oxygen Levels</h6>
+                    <div class="d-flex align-items-end">
+                        <span class="vital-value">98</span>
+                        <span class="vital-unit ms-2">%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 98%"></div>
+                    </div>
+                    <p class="mt-2 mb-0 normal-range"><i class="fas fa-check-circle me-1"></i> Excellent</p>
+                    <button class="history-btn" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Weight -->
+            <div class="col-md-4">
+                <div class="dashboard-card animate__animated animate__fadeInUp">
+                    <div class="icon-container weight-icon">
+                        <i class="fas fa-weight fa-2x"></i>
+                    </div>
+                    <h6 class="vital-title">Weight</h6>
+                    <div class="d-flex align-items-end">
+                        <span class="vital-value">75.2</span>
+                        <span class="vital-unit ms-2">Kg</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 75%"></div>
+                    </div>
+                    <p class="mt-2 mb-0 warning-range"><i class="fas fa-exclamation-triangle me-1"></i> Slightly overweight</p>
+                    <button class="history-btn" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Blood Pressure -->
+            <div class="col-md-4">
+                <div class="dashboard-card bp-card animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="icon-container bp-icon">
+                        <i class="fas fa-heartbeat fa-2x pulse-animation"></i>
+                    </div>
+                    <h6 class="vital-title">Blood Pressure</h6>
+                    <div class="d-flex align-items-end">
+                        <span class="vital-value">120/80</span>
+                        <span class="vital-unit ms-2">mmHg</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar systolic" role="progressbar" style="width: 60%"></div>
+                        <div class="progress-bar diastolic" role="progressbar" style="width: 40%"></div>
+                    </div>
+                    <p class="mt-2 mb-0 normal-range"><i class="fas fa-check-circle me-1"></i> Optimal</p>
+                    <button class="history-btn" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Glucose -->
+            <div class="col-md-4">
+                <div class="dashboard-card glucose-card animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="icon-container glucose-icon">
+                        <i class="fas fa-tint fa-2x"></i>
+                    </div>
+                    <h6 class="vital-title">Glucose Level</h6>
+                    <div class="d-flex align-items-end">
+                        <span class="vital-value">92</span>
+                        <span class="vital-unit ms-2">mg/dL</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 50%"></div>
+                    </div>
+                    <p class="mt-2 mb-0 normal-range"><i class="fas fa-check-circle me-1"></i> Normal</p>
+                    <p class="glucose-trend"><i class="fas fa-arrow-down me-1"></i> Stable trend</p>
+                    <button class="history-btn" data-bs-toggle="modal" data-bs-target="#historyModal">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="dashboard-card">
+                    <h5><i class="fas fa-chart-line me-2"></i> Vital Signs Trends</h5>
+                    <div class="text-center py-4">
+                        <img src="img.jpg" alt="Vital Signs Trend Chart" class="img-fluid rounded">
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#historyModal">
+                            <i class="fas fa-history me-1"></i> View Full History
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show login modal when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Uncomment this line to show login modal automatically
+            // var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            // loginModal.show();
+            
+            // Change patient button
+            document.getElementById('changePatientBtn').addEventListener('click', function() {
+                var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            });
+            
+            // Login button in modal
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                // In a real app, you would validate the card number here
+                var cardNumber = document.getElementById('cardNumber').value;
+                if (cardNumber.trim() !== '') {
+                    alert('Login successful! Loading patient data...');
+                    var loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    loginModal.hide();
+                } else {
+                    alert('Please enter a valid card number');
+                }
+            });
+            
+            // Simulate pulse animation for elements with pulse-animation class
+            setInterval(function() {
+                document.querySelectorAll('.pulse-animation').forEach(function(el) {
+                    el.style.transform = 'scale(' + (1 + Math.random() * 0.1) + ')';
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
